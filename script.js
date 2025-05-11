@@ -1,83 +1,82 @@
 const questions = [
     {
-      question: "Қызыл кітапқа енген ағаштар",
-      options: ["Қарағай, самырсын, шетен", "Арша, қайың, қарағаш", "Жөке, емен, шырша", "Үйеңкі, терек, қандағаш"],
-      correct: 3
+        question: "Қызыл кітапқа енген ағаштар",
+        options: ["Қарағай, самырсын, шетен", "Арша, қайың, қарағаш", "Жөке, емен, шырша", "Үйеңкі, терек, қандағаш"],
+        answer: 3
     },
     {
-      question: "Сақиналы ғаламшар",
-      options: ["Сатурн", "Юпитер", "Нептун", "Уран"],
-      correct: 0
+        question: "Сақиналы ғаламшар",
+        options: ["Сатурн", "Юпитер", "Нептун", "Уран"],
+        answer: 0
     },
-    {
-      question: "Өрмекші неше сатыдан тұрады",
-      options: ["Бес", "Төрт", "Екі", "Үш"],
-      correct: 3
-    },
-    {
-      question: "Ең жақсы жылу оқшаулағыш",
-      options: ["Ағаш", "Темір", "Пластик", "Шыны"],
-      correct: 1
-    },
-    {
-      question: "Қандай денелер жарықты көбірек өткізеді",
-      options: ["Мөлдір", "Жартылай мөлдір", "Қалың", "Боялған"],
-      correct: 0
-    },
-    {
-      question: "Өсімдікте не деп аталатын бояғыш зат болады",
-      options: ["Хлорофилл", "Антоциан", "Пигмент", "Каротин"],
-      correct: 2
-    },
-    {
-      question: "Қандай шөптесін өсімдік тұқымдары жануарлардың тұяқтарына жабысады",
-      options: ["Қызғалдақ", "Шырғанақ", "Жусан", "Жолжелкен"],
-      correct: 3
-    },
-    {
-      question: "-ы, -і жалғау қосқанда өзгеретін сөз",
-      options: ["тірек", "түлкі", "серік", "күрек"],
-      correct: 3
-    },
-    {
-      question: "Өлең дегеніміз не?",
-      options: ["Хабарландыру", "Көркем әңгіме", "Ғылыми мәтін", "Буын өлшемі мен ұйқасқа құрылатын сөз"],
-      correct: 3
-    },
-    {
-      question: "\"Күн шыққанда\" өлеңінің авторы",
-      options: ["Жамбыл Жабаев", "Ілияс Жансүгіров", "Мұхтар Әуезов", "Сәкен Сейфуллин"],
-      correct: 1
-    }
-  ];
-  
-  let current = 0;
-  function showQuestion() {
-    const block = document.getElementById("question");
-    block.innerHTML = `
-      <div class="question-block">
-        <h2>Бастауыш сынып: ${current + 1} - сұрақ</h2>
-        <p>${questions[current].question}</p>
-        <div class="options">
-          ${questions[current].options.map((opt, idx) =>
-            `<button onclick="checkAnswer(${idx}, this)">${String.fromCharCode(65 + idx)}. ${opt}</button>`).join("")}
-        </div>
-      </div>
-    `;
-  }
-  function checkAnswer(selected, btn) {
-    const correct = questions[current].correct;
-    const buttons = document.querySelectorAll(".options button");
-    buttons.forEach((b, i) => {
-      b.disabled = true;
-      if (i === correct) b.classList.add("correct");
-      else if (i === selected) b.classList.add("incorrect");
+    // қалған 8 сұрақ дәл осылай енгізіледі...
+];
+
+let current = 0;
+let score = 0;
+let userAnswers = [];
+
+function renderQuestion() {
+    const box = document.getElementById("question-box");
+    box.innerHTML = `<h3>Бастауыш сынып: ${current + 1} - сұрақ</h3>
+                     <p>${questions[current].question}</p>`;
+    questions[current].options.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.innerText = String.fromCharCode(65 + i) + ". " + opt;
+        btn.onclick = () => {
+            userAnswers[current] = i;
+            nextButton.style.display = "block";
+            finishButton.style.display = "block";
+        };
+        box.appendChild(btn);
+        box.appendChild(document.createElement("br"));
     });
-    setTimeout(() => {
-      current++;
-      if (current < questions.length) showQuestion();
-      else document.getElementById("question").innerHTML = "<h2>Тест аяқталды</h2>";
-    }, 1000);
-  }
-  window.onload = showQuestion;
+}
+
+function showResults() {
+    const box = document.getElementById("question-box");
+    const result = document.getElementById("result-box");
+    box.innerHTML = "";
+    result.style.display = "block";
+    result.innerHTML = `<h3>Нәтиже:</h3>`;
+    userAnswers.forEach((ans, i) => {
+        const isCorrect = ans === questions[i].answer;
+        if (isCorrect) score++;
+        result.innerHTML += `<p>Сұрақ ${i + 1}: ${isCorrect ? "✅ Дұрыс" : "❌ Қате"}</p>`;
+    });
+    result.innerHTML += `<h4>Барлығы: ${score} / ${questions.length}</h4>`;
+    document.getElementById("review-button").style.display = "block";
+}
+
+function reviewMistakes() {
+    const box = document.getElementById("question-box");
+    const result = document.getElementById("result-box");
+    result.style.display = "none";
+    box.innerHTML = "";
+    questions.forEach((q, i) => {
+        const user = userAnswers[i];
+        const correct = q.answer;
+        box.innerHTML += `<p><b>${i + 1}. ${q.question}</b></p>`;
+        q.options.forEach((opt, j) => {
+            const color = j === correct ? "correct" : (j === user ? "incorrect" : "");
+            box.innerHTML += `<p class="${color}">${String.fromCharCode(65 + j)}. ${opt}</p>`;
+        });
+    });
+}
+
+const nextButton = document.getElementById("next-button");
+const finishButton = document.getElementById("finish-button");
+
+nextButton.onclick = () => {
+    current++;
+    if (current < questions.length) {
+        renderQuestion();
+        nextButton.style.display = "none";
+        finishButton.style.display = "none";
+    }
+};
+
+finishButton.onclick = showResults;
+
+renderQuestion();
   

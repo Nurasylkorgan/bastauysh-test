@@ -1,175 +1,24 @@
 <!DOCTYPE html>
 <html lang="kk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Слив тест 2025</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      margin: 0;
-      background: #f2f2f2;
-    }
-    .container {
-      padding: 15px;
-    }
-    .question-box {
-      background: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 15px;
-    }
-    .question-title {
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-    .option {
-      padding: 10px;
-      margin: 5px 0;
-      background: #eee;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .option.correct {
-      background-color: #a3e4a3;
-      font-weight: bold;
-    }
-    .option.wrong {
-      background-color: #f8d7da;
-    }
-    .nav {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      margin-bottom: 20px;
-    }
-    .nav button {
-      flex: 1 0 18%;
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      background: #ccc;
-    }
-    .nav button.active {
-      background: #5cacee;
-      color: white;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Бастауыш тесті</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h2>Бастауыш сынып</h2>
-    <div class="nav" id="navigation"></div>
-    <div id="questionBox" class="question-box"></div>
-  </div>
+    <div class="container">
+        <h1>Бастауыш сынып</h1>
+        <div id="question-box"></div>
+        <div class="navigation">
+            <button id="next-button">Келесі сұрақ</button>
+            <button id="finish-button">Тестті аяқтау</button>
+        </div>
+        <div id="result-box" style="display:none;"></div>
+        <div id="review-button" style="display:none;">
+            <button onclick="reviewMistakes()">Қатемен жұмыс</button>
+        </div>
+    </div>
 
-  <script>
-    const questions = [
-      {
-        question: "Қызыл кітапқа енген ағаштар",
-        options: [
-          "Қарағай, самырсын, шетен",
-          "Арша, қайың, қарағаш",
-          "Жөке, емен, шырша",
-          "Үйеңкі, терек, қандағаш"
-        ],
-        answer: 3
-      },
-      {
-        question: "Сақиналы ғаламшар",
-        options: ["Сатурн", "Юпитер", "Нептун", "Уран"],
-        answer: 0
-      },
-      {
-        question: "Өрмекші неше сатыдан тұрады",
-        options: ["Бес", "Төрт", "Екі", "Үш"],
-        answer: 3
-      },
-      {
-        question: "Ең жақсы жылу оқшаулағыш",
-        options: ["Ағаш", "Темір", "Пластик", "Шыны"],
-        answer: 1
-      },
-      {
-        question: "Қандай денелер жарықты көбірек өткізеді",
-        options: ["Мөлдір", "Жартылай мөлдір", "Қалың", "Боялған"],
-        answer: 0
-      },
-      {
-        question: "Өсімдікте не деп аталатын бояғыш зат болады",
-        options: ["Хлорофилл", "Антоциан", "Пигмент", "Каротин"],
-        answer: 2
-      },
-      {
-        question: "Қандай шөптесін өсімдік тұқымдары жануарларға жабысып таралады",
-        options: ["Қызғалдақ", "Шырғанақ", "Жусан", "Жолжелкен"],
-        answer: 3
-      },
-      {
-        question: "-ы, -і әріптері өзгеріске ұшырайтын сөз",
-        options: ["тірек", "түлкі", "серік", "күрек"],
-        answer: 3
-      },
-      {
-        question: "Өлең дегеніміз не?",
-        options: [
-          "Хабарландыру",
-          "Көркем әңгіме",
-          "Ғылыми мәтін",
-          "Белгілі буын өлшемі бар, ырғаққа құрылған көркем сөз"
-        ],
-        answer: 3
-      },
-      {
-        question: "“Күн шыққанда” өлеңінің авторы",
-        options: ["Жамбыл Жабаев", "Ілияс Жансүгіров", "Мұхтар Әуезов", "Сәкен Сейфуллин"],
-        answer: 1
-      }
-    ];
-
-    const questionBox = document.getElementById("questionBox");
-    const navigation = document.getElementById("navigation");
-
-    function renderQuestion(index) {
-      const q = questions[index];
-      questionBox.innerHTML = `
-        <div class="question-title">Бастауыш сынып: ${index + 1} - сұрақ</div>
-        <div>${q.question}</div>
-        ${q.options.map((opt, i) =>
-          `<div class="option" onclick="selectOption(${index}, ${i}, this)">${String.fromCharCode(65 + i)}. ${opt}</div>`
-        ).join("")}
-      `;
-      highlightActive(index);
-    }
-
-    function selectOption(qIndex, selected, element) {
-      const correct = questions[qIndex].answer;
-      const allOptions = document.querySelectorAll(".option");
-      allOptions.forEach((opt, idx) => {
-        opt.classList.remove("correct", "wrong");
-        if (idx === correct) opt.classList.add("correct");
-        if (idx === selected && idx !== correct) opt.classList.add("wrong");
-      });
-    }
-
-    function highlightActive(index) {
-      document.querySelectorAll(".nav button").forEach((btn, i) => {
-        btn.classList.toggle("active", i === index);
-      });
-    }
-
-    function renderNav() {
-      for (let i = 0; i < questions.length; i++) {
-        const btn = document.createElement("button");
-        btn.innerText = i + 1;
-        btn.onclick = () => renderQuestion(i);
-        navigation.appendChild(btn);
-      }
-    }
-
-    renderNav();
-    renderQuestion(0);
-  </script>
+    <script src="script.js"></script>
 </body>
 </html>
