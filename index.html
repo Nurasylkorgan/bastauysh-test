@@ -1,24 +1,63 @@
 <!DOCTYPE html>
 <html lang="kk">
 <head>
-    <meta charset="UTF-8">
-    <title>Бастауыш тесті</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Слив тест 2025</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="container">
-        <h1>Бастауыш сынып</h1>
-        <div id="question-box"></div>
-        <div class="navigation">
-            <button id="next-button">Келесі сұрақ</button>
-            <button id="finish-button">Тестті аяқтау</button>
+  <div class="app">
+    <header>
+      <h1>Слив тест 2025</h1>
+      <button id="endTestBtn" class="end-btn">Аяқтау</button>
+    </header>
+
+    <main>
+      <div class="question-nav" id="questionNav"></div>
+      <div class="question-area" id="questionArea"></div>
+      <div class="navigation">
+        <button id="prevBtn">←</button>
+        <button id="questionListBtn">⬚</button>
+        <button id="nextBtn">→</button>
+      </div>
+    </main>
+
+    <div class="modal" id="confirmModal">
+      <div class="modal-content">
+        <p>Сіз шынымен тестті аяқтағыңыз келе ме?</p>
+        <div class="modal-buttons">
+          <button id="cancelEndTest">Бас тарту</button>
+          <button id="confirmEndTest">Аяқтау</button>
         </div>
-        <div id="result-box" style="display:none;"></div>
-        <div id="review-button" style="display:none;">
-            <button onclick="reviewMistakes()">Қатемен жұмыс</button>
-        </div>
+      </div>
     </div>
 
-    <script src="script.js"></script>
+    <div class="modal" id="resultsModal">
+      <div class="modal-content">
+        <h2>Тест аяқталды!</h2>
+        <table>
+          <thead>
+            <tr><th>Пәндер</th><th>Дұрыс жауап</th><th>Барлығы</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Бастауыш сынып</td><td id="correctCount">0</td><td id="totalCount">10</td></tr>
+          </tbody>
+        </table>
+        <button id="reviewMistakes">Қатемен жұмыс</button>
+        <button id="closeResults">Жабу</button>
+      </div>
+    </div>
+
+    <div class="modal" id="questionListModal">
+      <div class="modal-content">
+        <h2>Сұрақтар</h2>
+        <div id="questionGrid"></div>
+        <button id="closeList">Жабу</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
