@@ -1,63 +1,48 @@
 <!DOCTYPE html>
 <html lang="kk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Слив тест 2025</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тест Платформасы</title>
+  <!-- Telegram WebApp script (Telegram API-мен жұмыс істеу үшін) -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="app">
-    <header>
-      <h1>Слив тест 2025</h1>
-      <button id="endTestBtn" class="end-btn">Аяқтау</button>
-    </header>
-
-    <main>
-      <div class="question-nav" id="questionNav"></div>
-      <div class="question-area" id="questionArea"></div>
-      <div class="navigation">
-        <button id="prevBtn">←</button>
-        <button id="questionListBtn">⬚</button>
-        <button id="nextBtn">→</button>
+  <div id="app">
+    <!-- Сұрақтар бөлімі (Quiz Section) -->
+    <div id="quiz-section">
+      <!-- Сұрақ навигациясы (нөмірлер) -->
+      <div id="nav"></div>
+      <!-- Сұрақ мәтіні -->
+      <h3 id="question-text"></h3>
+      <!-- Қате/жауап бермеген туралы хабарлама -->
+      <div id="feedback" class="hidden"></div>
+      <!-- Жауап нұсқалары контейнері -->
+      <div id="answers"></div>
+      <!-- Төменгі навигациялық түймелер -->
+      <div id="bottom-buttons">
+        <button id="finish-btn" type="button">Тестті аяқтау</button>
+        <button id="next-btn" type="button">Келесі сұрақ</button>
       </div>
-    </main>
-
-    <div class="modal" id="confirmModal">
+    </div>
+    <!-- Нәтиже бөлімі (Result Section) -->
+    <div id="result-section" class="hidden">
+      <h2>Тест аяқталды!</h2>
+      <p>Дұрыс жауаптар саны: <span id="correct-count">0</span></p>
+      <p>Қате жауаптар саны: <span id="wrong-count">0</span></p>
+      <button id="retry-btn" type="button">Қатемен жұмыс</button>
+      <button id="close-btn" type="button">Жабу</button>
+    </div>
+    <!-- Тесті аяқтауды растау модалы (Confirm Modal) -->
+    <div id="modal-overlay" class="hidden">
       <div class="modal-content">
         <p>Сіз шынымен тестті аяқтағыңыз келе ме?</p>
-        <div class="modal-buttons">
-          <button id="cancelEndTest">Бас тарту</button>
-          <button id="confirmEndTest">Аяқтау</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal" id="resultsModal">
-      <div class="modal-content">
-        <h2>Тест аяқталды!</h2>
-        <table>
-          <thead>
-            <tr><th>Пәндер</th><th>Дұрыс жауап</th><th>Барлығы</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Бастауыш сынып</td><td id="correctCount">0</td><td id="totalCount">10</td></tr>
-          </tbody>
-        </table>
-        <button id="reviewMistakes">Қатемен жұмыс</button>
-        <button id="closeResults">Жабу</button>
-      </div>
-    </div>
-
-    <div class="modal" id="questionListModal">
-      <div class="modal-content">
-        <h2>Сұрақтар</h2>
-        <div id="questionGrid"></div>
-        <button id="closeList">Жабу</button>
+        <button id="modal-cancel" type="button">Бас тарту</button>
+        <button id="modal-confirm" type="button">Аяқтау</button>
       </div>
     </div>
   </div>
-
   <script src="script.js"></script>
 </body>
 </html>
